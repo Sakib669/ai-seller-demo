@@ -1,0 +1,201 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Authentication Models (Better Auth Compatible)
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          String    @default("CUSTOMER") // CUSTOMER or ADMIN
+  phone         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  orders        Order[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  idToken               String?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verifications")
+}
+
+// E-commerce Domain Models
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  icon        String?
+  description String?
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                  String           @id @default(cuid())
+  title               String
+  slug                String           @unique
+  shortDesc           String?
+  description         String?
+  categoryId          String
+  badge               String?          // e.g. "HOT", "NEW", "BESTSELLER"
+  isFeatured          Boolean          @default(false)
+  inStock             Boolean          @default(true)
+  imageUrl            String?
+  minPrice            Float            @default(0)
+  maxPrice            Float            @default(0)
+  faqs                String?          // JSON encoded string of FAQ array
+  requiresCredentials Boolean          @default(false)
+  credentialFields    String?          // Comma separated requested fields e.g. "Target Email, Password"
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  category            Category         @relation(fields: [categoryId], references: [id])
+  variants            ProductVariant[]
+  orderItems          OrderItem[]
+
+  @@map("products")
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  summary     String
+  content     String
+  category    String   @default("Guides")
+  readTime    String   @default("5 min read")
+  imageUrl    String?
+  author      String   @default("Editorial Team")
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("blog_posts")
+}
+
+model ProductVariant {
+  id            String          @id @default(cuid())
+  productId     String
+  title         String          // e.g. "1 Month - 1 Screen", "12 Months Lifetime"
+  duration      String?         // e.g. "1 Month", "1 Year", "Lifetime"
+  screenType    String?         // e.g. "Shared Profile", "Personal Mail", "Key"
+  price         Float
+  originalPrice Float?
+  stockCount    Int             @default(50)
+  isAvailable   Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  product       Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  inventory     InventoryItem[]
+  orderItems    OrderItem[]
+
+  @@map("product_variants")
+}
+
+model InventoryItem {
+  id         String         @id @default(cuid())
+  variantId  String
+  type       String         @default("LICENSE_KEY") // "LICENSE_KEY" or "SHARED_ACCOUNT"
+  secretData String         // Encrypted license key or account credentials
+  isRedeemed Boolean        @default(false)
+  redeemedAt DateTime?
+  orderId    String?
+  createdAt  DateTime       @default(now())
+  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@map("inventory_items")
+}
+
+model Order {
+  id             String      @id @default(cuid())
+  orderCode      String      @unique // e.g. SBD-2026-9812
+  userId         String?
+  customerName   String
+  customerEmail  String
+  customerPhone  String
+  deliveryEmail  String
+  customerNote   String?
+  subtotal       Float
+  discount       Float       @default(0)
+  totalAmount    Float
+  status         String      @default("PENDING") // PENDING, PAID, FULFILLED, CANCELLED
+  paymentGateway String      @default("SSLCOMMERZ") // SSLCOMMERZ, BKASH, NAGAD
+  paymentTrxId   String?
+  paymentStatus  String      @default("UNPAID") // UNPAID, VALID, FAILED, CANCELLED
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  user           User?       @relation(fields: [userId], references: [id])
+  items          OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id                   String          @id @default(cuid())
+  orderId              String
+  productId            String
+  variantId            String
+  productTitle         String
+  variantTitle         String
+  quantity             Int             @default(1)
+  unitPrice            Float
+  totalPrice           Float
+  deliveredCredentials String?         // Serialized credentials or keys delivered to customer
+  order                Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product              Product         @relation(fields: [productId], references: [id])
+  variant              ProductVariant  @relation(fields: [variantId], references: [id])
+
+  @@map("order_items")
+}
