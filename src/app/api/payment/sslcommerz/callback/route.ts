@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       });
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl = process.env.APP_URL || process.env.BETTER_AUTH_URL || "http://localhost:3000";
     return NextResponse.redirect(`${appUrl}/order/${orderCode}`, 303);
   } catch (error) {
     console.error("SSLCommerz callback processing error:", error);
@@ -33,6 +33,6 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const orderCode = url.searchParams.get("orderCode");
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const appUrl = process.env.APP_URL || process.env.BETTER_AUTH_URL || "http://localhost:3000";
   return NextResponse.redirect(`${appUrl}/order/${orderCode || ""}`);
 }

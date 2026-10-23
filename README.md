@@ -54,7 +54,7 @@ Set your configuration values:
 DATABASE_URL="file:./dev.db"
 BETTER_AUTH_SECRET="your-secret-token"
 BETTER_AUTH_URL="http://localhost:3000"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
+APP_URL="http://localhost:3000"
 
 SSLCOMMERZ_STORE_ID="testbox"
 SSLCOMMERZ_STORE_PASSWORD="qwerty"

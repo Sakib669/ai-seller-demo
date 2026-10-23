@@ -106,7 +106,7 @@ export async function POST(req: Request) {
 
     // Handle SSLCommerz Gateway Redirection if selected
     if (paymentMethod === "SSLCOMMERZ") {
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+      const appUrl = process.env.APP_URL || process.env.BETTER_AUTH_URL || "http://localhost:3000";
       const sslResponse = await initiateSSLCommerzPayment({
         total_amount: totalAmount,
         currency: "BDT",
