@@ -204,9 +204,9 @@ export async function GET(
           </tr>
         </thead>
         <tbody>
-          ${order.items
+          ${(order.items || [])
             .map(
-              (item) => `
+              (item: any) => `
             <tr>
               <td><strong>${item.productTitle}</strong></td>
               <td>${item.variantTitle}</td>

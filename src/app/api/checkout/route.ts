@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     let deliveredCredentialsSummary: string[] = [];
 
     // Create Order with Prisma transaction
-    const newOrder = await prisma.$transaction(async (tx) => {
+    const newOrder = await prisma.$transaction(async (tx: any) => {
       const order = await tx.order.create({
         data: {
           orderCode,

@@ -83,7 +83,7 @@ export default async function BlogsPage({
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post) => (
+            {(posts || []).map((post) => (
               <article
                 key={post.id}
                 className="group flex flex-col bg-[#04241b] border border-[#064e3b] hover:border-[#16a34a] rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-emerald hover:-translate-y-1"

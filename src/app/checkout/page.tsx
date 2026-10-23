@@ -79,6 +79,40 @@ export default function CheckoutPage() {
       // Clear local cart
       clearCart();
 
+      // Persist order to browser localStorage
+      try {
+        const stored = JSON.parse(localStorage.getItem("subscriptionsbd_orders") || "[]");
+        stored.unshift({
+          id: data.orderCode,
+          orderCode: data.orderCode,
+          customerName,
+          customerEmail,
+          customerPhone,
+          deliveryEmail,
+          subtotal,
+          totalAmount: subtotal,
+          status: paymentMethod.startsWith("MANUAL") ? "PENDING" : "PAID",
+          paymentGateway: paymentMethod,
+          paymentTrxId: trxId || null,
+          paymentStatus: paymentMethod.startsWith("MANUAL") ? "UNPAID" : "VALID",
+          createdAt: new Date().toISOString(),
+          items: items.map((i) => ({
+            id: i.variantId,
+            productId: i.productId,
+            variantId: i.variantId,
+            productTitle: i.productTitle,
+            variantTitle: i.variantTitle,
+            quantity: i.quantity,
+            unitPrice: i.unitPrice,
+            totalPrice: i.unitPrice * i.quantity,
+            deliveredCredentials: "Key or credential will be shared via Dashboard/WhatsApp",
+          })),
+        });
+        localStorage.setItem("subscriptionsbd_orders", JSON.stringify(stored));
+      } catch (err) {
+        console.error("Failed saving to localStorage:", err);
+      }
+
       if (data.gatewayUrl) {
         window.location.href = data.gatewayUrl;
       } else if (data.redirectUrl) {

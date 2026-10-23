@@ -46,14 +46,14 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     shortDesc: p.shortDesc || undefined,
     description: p.description || undefined,
     categoryId: p.categoryId,
-    categoryName: p.category.name,
+    categoryName: p.category?.name || "General",
     badge: p.badge || undefined,
     isFeatured: p.isFeatured,
     inStock: p.inStock,
     imageUrl: p.imageUrl || undefined,
     minPrice: p.minPrice,
     maxPrice: p.maxPrice,
-    variants: p.variants.map((v) => ({
+    variants: (p.variants || []).map((v) => ({
       id: v.id,
       productId: v.productId,
       title: v.title,

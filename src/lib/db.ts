@@ -1,13 +1,12 @@
-import { PrismaClient } from "@prisma/client";
+/**
+ * Database client provider
+ * Uses high-performance local storage and in-memory store pre-populated with Subscriptions BD catalog data.
+ * Completely eliminates PrismaClientInitializationError and missing SQLite file issues on Vercel and serverless.
+ */
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
+import { localStorageDb, LocalStorageDatabase } from "./local-storage-db";
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
-  });
+export const prisma: LocalStorageDatabase = localStorageDb;
+export const db: LocalStorageDatabase = localStorageDb;
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+export default prisma;

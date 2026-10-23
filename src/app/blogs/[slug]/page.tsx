@@ -101,7 +101,7 @@ export default async function BlogPostDetailPage({
         {/* Main Content Body */}
         <div className="bg-[#04241b] border border-[#064e3b] rounded-2xl p-6 sm:p-10 mb-12 shadow-2xl">
           <div className="prose prose-invert max-w-none text-gray-200 leading-relaxed space-y-4">
-            {post.content.split("\n\n").map((paragraph, index) => {
+            {post.content.split("\n\n").map((paragraph: string, index: number) => {
               if (paragraph.startsWith("# ")) {
                 return (
                   <h1 key={index} className="text-2xl font-bold text-white mt-6 mb-3">
@@ -163,7 +163,7 @@ export default async function BlogPostDetailPage({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {relatedProducts.map((product) => (
+            {(relatedProducts || []).map((product) => (
               <div
                 key={product.id}
                 className="bg-[#04241b] border border-[#064e3b] rounded-xl p-4 flex flex-col justify-between hover:border-[#16a34a] transition-colors"

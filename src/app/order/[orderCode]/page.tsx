@@ -91,7 +91,7 @@ export default async function OrderPage({ params }: OrderPageProps) {
         </div>
 
         <div className="space-y-4">
-          {order.items.map((item) => (
+          {(order.items || []).map((item) => (
             <div
               key={item.id}
               className="bg-[#04241b] border border-[#064e3b] rounded-xl p-4 space-y-2"

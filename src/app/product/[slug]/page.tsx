@@ -39,14 +39,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
     shortDesc: productRaw.shortDesc || undefined,
     description: productRaw.description || undefined,
     categoryId: productRaw.categoryId,
-    categoryName: productRaw.category.name,
+    categoryName: productRaw.category?.name || "General",
     badge: productRaw.badge || undefined,
     isFeatured: productRaw.isFeatured,
     inStock: productRaw.inStock,
     imageUrl: productRaw.imageUrl || undefined,
     minPrice: productRaw.minPrice,
     maxPrice: productRaw.maxPrice,
-    variants: productRaw.variants.map((v) => ({
+    variants: (productRaw.variants || []).map((v) => ({
       id: v.id,
       productId: v.productId,
       title: v.title,
@@ -79,14 +79,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
     shortDesc: p.shortDesc || undefined,
     description: p.description || undefined,
     categoryId: p.categoryId,
-    categoryName: p.category.name,
+    categoryName: p.category?.name || "General",
     badge: p.badge || undefined,
     isFeatured: p.isFeatured,
     inStock: p.inStock,
     imageUrl: p.imageUrl || undefined,
     minPrice: p.minPrice,
     maxPrice: p.maxPrice,
-    variants: p.variants.map((v) => ({
+    variants: (p.variants || []).map((v) => ({
       id: v.id,
       productId: v.productId,
       title: v.title,
