@@ -13,6 +13,7 @@
     "@prisma/client": "^6.2.1",
     "better-auth": "^1.1.13",
     "clsx": "^2.1.1",
+    "framer-motion": "^14.6.0",
     "lucide-react": "^0.469.0",
     "next": "^15.1.4",
     "react": "^19.0.0",

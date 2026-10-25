@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ShoppingCart, Zap, CheckCircle2, ShieldCheck, Clock } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cart-store";
 import { ProductItem, ProductVariantItem } from "@/types";
@@ -46,15 +47,31 @@ export function ProductPurchaseBox({ product }: ProductPurchaseBoxProps) {
     router.push("/checkout");
   };
 
+  const currentPrice = selectedVariant.price || product.minPrice;
+
   return (
-    <div className="hermes-card rounded-2xl p-6 space-y-6">
-      {/* Price Header */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className="hermes-card rounded-2xl p-6 space-y-6 border border-[#064e3b]"
+    >
+      {/* Price Header with animated price change */}
       <div className="pb-4 border-b border-[#064e3b]">
         <span className="text-xs text-[#86efac]/80 block uppercase font-medium">Selected Tier Price</span>
-        <div className="flex items-baseline gap-3 mt-1">
-          <span className="text-3xl font-extrabold text-white font-mono">
-            {formatPrice(selectedVariant.price || product.minPrice)}
-          </span>
+        <div className="flex items-baseline gap-3 mt-1 overflow-hidden">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={currentPrice}
+              initial={{ y: 15, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -15, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="text-3xl font-extrabold text-white font-mono"
+            >
+              {formatPrice(currentPrice)}
+            </motion.span>
+          </AnimatePresence>
           {selectedVariant.originalPrice && (
             <span className="text-sm text-gray-500 line-through font-mono">
               {formatPrice(selectedVariant.originalPrice)}
@@ -73,10 +90,11 @@ export function ProductPurchaseBox({ product }: ProductPurchaseBoxProps) {
             {product.variants.map((v) => {
               const isSelected = selectedVariant.id === v.id;
               return (
-                <button
+                <motion.button
                   key={v.id}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => setSelectedVariant(v)}
-                  className={`p-3 rounded-lg border text-left transition-all relative ${
+                  className={`p-3 rounded-xl border text-left transition-all relative ${
                     isSelected
                       ? "bg-[#16a34a]/20 border-[#16a34a] shadow-emerald"
                       : "bg-[#04241b] border-[#064e3b] hover:border-[#16a34a]/50 text-gray-300"
@@ -88,9 +106,12 @@ export function ProductPurchaseBox({ product }: ProductPurchaseBoxProps) {
                     <span className="font-bold text-[#86efac] font-mono">{formatPrice(v.price)}</span>
                   </div>
                   {isSelected && (
-                    <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#86efac]" />
+                    <motion.div
+                      layoutId="selectedVariantDot"
+                      className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#86efac]"
+                    />
                   )}
-                </button>
+                </motion.button>
               );
             })}
           </div>
@@ -99,21 +120,25 @@ export function ProductPurchaseBox({ product }: ProductPurchaseBoxProps) {
 
       {/* CTA Buttons */}
       <div className="space-y-3 pt-2">
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={handleBuyNow}
-          className="w-full btn-hermes-primary py-3.5 text-sm flex items-center justify-center gap-2"
+          className="w-full btn-hermes-primary py-3.5 text-sm flex items-center justify-center gap-2 rounded-xl"
         >
           <Zap className="w-4 h-4 fill-white" />
           <span>Buy Now with Instant Checkout</span>
-        </button>
+        </motion.button>
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={handleAddToCart}
-          className="w-full btn-hermes-secondary py-3 text-sm flex items-center justify-center gap-2"
+          className="w-full btn-hermes-secondary py-3 text-sm flex items-center justify-center gap-2 rounded-xl"
         >
           <ShoppingCart className="w-4 h-4 text-[#86efac]" />
           <span>Add to Cart</span>
-        </button>
+        </motion.button>
       </div>
 
       {/* Trust Checklist */}
@@ -131,6 +156,6 @@ export function ProductPurchaseBox({ product }: ProductPurchaseBoxProps) {
           <span>Verified Merchant Payment via bKash, Nagad & SSLCommerz</span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

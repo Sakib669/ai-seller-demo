@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { ProductPurchaseBox } from "@/components/catalog/product-purchase-box";
 import { ProductCard } from "@/components/catalog/product-card";
 import { ProductItem } from "@/types";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 
 export const dynamic = "force-dynamic";
 
@@ -122,7 +123,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* Main Grid: Details Left, Purchase Box Right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Product Information */}
-        <div className="lg:col-span-7 space-y-6">
+        <FadeIn className="lg:col-span-7 space-y-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs font-bold text-[#86efac] uppercase tracking-wider">
@@ -200,7 +201,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </div>
           )}
-        </div>
+        </FadeIn>
 
         {/* Right Column: Purchase Box */}
         <div className="lg:col-span-5 sticky top-24">
@@ -211,14 +212,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* Related Products */}
       {relatedProducts.length > 0 && (
         <div className="pt-12 border-t border-[#064e3b] space-y-6">
-          <h2 className="text-xl font-bold text-white tracking-tight">
-            Related Products in {product.categoryName}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <FadeIn>
+            <h2 className="text-xl font-bold text-white tracking-tight">
+              Related Products in {product.categoryName}
+            </h2>
+          </FadeIn>
+          <StaggerContainer staggerDelay={0.07} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedProducts.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <StaggerItem key={p.id}>
+                <ProductCard product={p} />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       )}
     </div>

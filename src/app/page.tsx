@@ -14,6 +14,7 @@ import {
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/catalog/product-card";
 import { ProductItem } from "@/types";
+import { FadeIn, StaggerContainer, StaggerItem, ScaleOnHover } from "@/components/ui/motion";
 
 export const dynamic = "force-dynamic";
 
@@ -67,200 +68,261 @@ export default async function HomePage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             {/* Trustpilot Ribbon */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#04241b] border border-[#064e3b] text-xs text-gray-300 shadow-sm">
-              <span className="flex text-amber-400">
-                {"★".repeat(5)}
-              </span>
-              <span className="font-semibold text-white">4.9 / 5.0</span>
-              <span className="text-[#86efac]/80">on Trustpilot (240+ Verified Reviews)</span>
-            </div>
+            <FadeIn direction="down" duration={0.4}>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#04241b] border border-[#064e3b] text-xs text-gray-300 shadow-sm">
+                <span className="flex text-amber-400">
+                  {"★".repeat(5)}
+                </span>
+                <span className="font-semibold text-white">4.9 / 5.0</span>
+                <span className="text-[#86efac]/80">on Trustpilot (240+ Verified Reviews)</span>
+              </div>
+            </FadeIn>
 
             {/* Headline */}
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15]">
-              The Largest Shop for{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#86efac] via-[#4ade80] to-[#16a34a]">
-                Digital Products
-              </span>{" "}
-              in Bangladesh
-            </h1>
+            <FadeIn delay={0.1} duration={0.5}>
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15]">
+                The Largest Shop for{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#86efac] via-[#4ade80] to-[#16a34a]">
+                  Digital Products
+                </span>{" "}
+                in Bangladesh
+              </h1>
+            </FadeIn>
 
             {/* Subtitle */}
-            <p className="text-sm sm:text-base text-[#d1fae5]/90 max-w-2xl mx-auto leading-relaxed">
-              Unlock access to ChatGPT Plus, YouTube Premium, Windows Keys, and educational OTT tools. 100% verified merchant payment via bKash, Nagad, Rocket, and SSLCommerz.
-            </p>
+            <FadeIn delay={0.2} duration={0.5}>
+              <p className="text-sm sm:text-base text-[#d1fae5]/90 max-w-2xl mx-auto leading-relaxed">
+                Unlock access to ChatGPT Plus, YouTube Premium, Windows Keys, and educational OTT tools. 100% verified merchant payment via bKash, Nagad, Rocket, and SSLCommerz.
+              </p>
+            </FadeIn>
 
             {/* Call to Actions */}
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-              <Link href="/shop" className="btn-hermes-primary flex items-center gap-2 text-sm px-6 py-3">
-                <span>Explore Catalog</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/shop?category=ai-grammer-and-writing-products"
-                className="btn-hermes-secondary text-sm px-6 py-3"
-              >
-                Browse AI Tools
-              </Link>
-            </div>
+            <FadeIn delay={0.3} duration={0.4}>
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+                <ScaleOnHover>
+                  <Link href="/shop" className="btn-hermes-primary flex items-center gap-2 text-sm px-6 py-3 rounded-xl">
+                    <span>Explore Catalog</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </ScaleOnHover>
+                <ScaleOnHover>
+                  <Link
+                    href="/shop?category=ai-grammer-and-writing-products"
+                    className="btn-hermes-secondary text-sm px-6 py-3 rounded-xl"
+                  >
+                    Browse AI Tools
+                  </Link>
+                </ScaleOnHover>
+              </div>
+            </FadeIn>
 
             {/* Metrics Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-[#064e3b]">
-              <div className="p-3 bg-[#04241b]/80 rounded-lg border border-[#064e3b]">
+            <StaggerContainer
+              delayChildren={0.35}
+              staggerDelay={0.08}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-[#064e3b]"
+            >
+              <StaggerItem className="p-3 bg-[#04241b]/80 rounded-xl border border-[#064e3b]">
                 <div className="text-xl font-extrabold text-white font-mono">100%</div>
                 <div className="text-xs text-[#86efac]/80 mt-0.5">Secure Payment</div>
-              </div>
-              <div className="p-3 bg-[#04241b]/80 rounded-lg border border-[#064e3b]">
+              </StaggerItem>
+              <StaggerItem className="p-3 bg-[#04241b]/80 rounded-xl border border-[#064e3b]">
                 <div className="text-xl font-extrabold text-[#86efac] font-mono">94+</div>
                 <div className="text-xs text-[#86efac]/80 mt-0.5">Active Products</div>
-              </div>
-              <div className="p-3 bg-[#04241b]/80 rounded-lg border border-[#064e3b]">
+              </StaggerItem>
+              <StaggerItem className="p-3 bg-[#04241b]/80 rounded-xl border border-[#064e3b]">
                 <div className="text-xl font-extrabold text-white font-mono">2019</div>
                 <div className="text-xs text-[#86efac]/80 mt-0.5">Serving Customers</div>
-              </div>
-              <div className="p-3 bg-[#04241b]/80 rounded-lg border border-[#064e3b]">
+              </StaggerItem>
+              <StaggerItem className="p-3 bg-[#04241b]/80 rounded-xl border border-[#064e3b]">
                 <div className="text-xl font-extrabold text-[#16a34a] font-mono">24/7</div>
                 <div className="text-xs text-[#86efac]/80 mt-0.5">Support & Warranty</div>
-              </div>
-            </div>
+              </StaggerItem>
+            </StaggerContainer>
           </div>
         </div>
       </section>
 
       {/* 2. Categories Grid */}
       <section className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <span className="text-xs font-bold text-[#86efac] tracking-wider uppercase">Categories</span>
-            <h2 className="text-2xl font-bold text-white tracking-tight mt-1">Browse by Category</h2>
+        <FadeIn>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <span className="text-xs font-bold text-[#86efac] tracking-wider uppercase">Categories</span>
+              <h2 className="text-2xl font-bold text-white tracking-tight mt-1">Browse by Category</h2>
+            </div>
+            <Link href="/shop" className="text-xs text-[#86efac] hover:underline flex items-center gap-1 font-semibold">
+              <span>View All</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
-          <Link href="/shop" className="text-xs text-[#86efac] hover:underline flex items-center gap-1 font-semibold">
-            <span>View All</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
+        </FadeIn>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-          <Link
-            href="/shop?category=ai-grammer-and-writing-products"
-            className="hermes-card rounded-xl p-3 flex flex-col items-center text-center group"
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
-              AI & Writing
-            </h3>
-          </Link>
+        <StaggerContainer
+          staggerDelay={0.05}
+          className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3"
+        >
+          <StaggerItem>
+            <ScaleOnHover scaleHover={1.05}>
+              <Link
+                href="/shop?category=ai-grammer-and-writing-products"
+                className="hermes-card rounded-2xl p-3.5 flex flex-col items-center text-center group block"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
+                  AI & Writing
+                </h3>
+              </Link>
+            </ScaleOnHover>
+          </StaggerItem>
 
-          <Link
-            href="/shop?category=video-streaming"
-            className="hermes-card rounded-xl p-3 flex flex-col items-center text-center group"
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <Film className="w-5 h-5" />
-            </div>
-            <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
-              Streaming
-            </h3>
-          </Link>
+          <StaggerItem>
+            <ScaleOnHover scaleHover={1.05}>
+              <Link
+                href="/shop?category=video-streaming"
+                className="hermes-card rounded-2xl p-3.5 flex flex-col items-center text-center group block"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <Film className="w-5 h-5" />
+                </div>
+                <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
+                  Streaming
+                </h3>
+              </Link>
+            </ScaleOnHover>
+          </StaggerItem>
 
-          <Link
-            href="/shop?category=key"
-            className="hermes-card rounded-xl p-3 flex flex-col items-center text-center group"
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <KeyRound className="w-5 h-5" />
-            </div>
-            <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
-              Software Keys
-            </h3>
-          </Link>
+          <StaggerItem>
+            <ScaleOnHover scaleHover={1.05}>
+              <Link
+                href="/shop?category=key"
+                className="hermes-card rounded-2xl p-3.5 flex flex-col items-center text-center group block"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <KeyRound className="w-5 h-5" />
+                </div>
+                <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
+                  Software Keys
+                </h3>
+              </Link>
+            </ScaleOnHover>
+          </StaggerItem>
 
-          <Link
-            href="/shop?category=educational-tools"
-            className="hermes-card rounded-xl p-3 flex flex-col items-center text-center group"
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <GraduationCap className="w-5 h-5" />
-            </div>
-            <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
-              Edu-Tech
-            </h3>
-          </Link>
+          <StaggerItem>
+            <ScaleOnHover scaleHover={1.05}>
+              <Link
+                href="/shop?category=educational-tools"
+                className="hermes-card rounded-2xl p-3.5 flex flex-col items-center text-center group block"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <GraduationCap className="w-5 h-5" />
+                </div>
+                <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
+                  Edu-Tech
+                </h3>
+              </Link>
+            </ScaleOnHover>
+          </StaggerItem>
 
-          <Link
-            href="/shop?category=utilities"
-            className="hermes-card rounded-xl p-3 flex flex-col items-center text-center group"
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <Wrench className="w-5 h-5" />
-            </div>
-            <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
-              Utilities
-            </h3>
-          </Link>
+          <StaggerItem>
+            <ScaleOnHover scaleHover={1.05}>
+              <Link
+                href="/shop?category=utilities"
+                className="hermes-card rounded-2xl p-3.5 flex flex-col items-center text-center group block"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <Wrench className="w-5 h-5" />
+                </div>
+                <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
+                  Utilities
+                </h3>
+              </Link>
+            </ScaleOnHover>
+          </StaggerItem>
 
-          <Link
-            href="/shop?category=vpn"
-            className="hermes-card rounded-xl p-3 flex flex-col items-center text-center group"
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <Shield className="w-5 h-5" />
-            </div>
-            <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
-              VPN & Privacy
-            </h3>
-          </Link>
+          <StaggerItem>
+            <ScaleOnHover scaleHover={1.05}>
+              <Link
+                href="/shop?category=vpn"
+                className="hermes-card rounded-2xl p-3.5 flex flex-col items-center text-center group block"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <Shield className="w-5 h-5" />
+                </div>
+                <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
+                  VPN & Privacy
+                </h3>
+              </Link>
+            </ScaleOnHover>
+          </StaggerItem>
 
-          <Link
-            href="/shop?category=audio-streaming"
-            className="hermes-card rounded-xl p-3 flex flex-col items-center text-center group"
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <Headphones className="w-5 h-5" />
-            </div>
-            <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
-              Audio
-            </h3>
-          </Link>
+          <StaggerItem>
+            <ScaleOnHover scaleHover={1.05}>
+              <Link
+                href="/shop?category=audio-streaming"
+                className="hermes-card rounded-2xl p-3.5 flex flex-col items-center text-center group block"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <Headphones className="w-5 h-5" />
+                </div>
+                <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
+                  Audio
+                </h3>
+              </Link>
+            </ScaleOnHover>
+          </StaggerItem>
 
-          <Link
-            href="/shop?category=apple-products"
-            className="hermes-card rounded-xl p-3 flex flex-col items-center text-center group"
-          >
-            <div className="w-10 h-10 rounded-lg bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-              <CreditCard className="w-5 h-5" />
-            </div>
-            <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
-              Apple Cards
-            </h3>
-          </Link>
-        </div>
+          <StaggerItem>
+            <ScaleOnHover scaleHover={1.05}>
+              <Link
+                href="/shop?category=apple-products"
+                className="hermes-card rounded-2xl p-3.5 flex flex-col items-center text-center group block"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#16a34a]/15 border border-[#16a34a]/40 text-[#86efac] flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                  <CreditCard className="w-5 h-5" />
+                </div>
+                <h3 className="text-xs font-bold text-white group-hover:text-[#86efac] transition-colors">
+                  Apple Cards
+                </h3>
+              </Link>
+            </ScaleOnHover>
+          </StaggerItem>
+        </StaggerContainer>
       </section>
 
       {/* 3. Featured & Best Selling Products */}
       <section className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <span className="text-xs font-bold text-[#16a34a] tracking-wider uppercase">Top Picks</span>
-            <h2 className="text-2xl font-bold text-white tracking-tight mt-1">Best Selling Subscriptions</h2>
+        <FadeIn>
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <span className="text-xs font-bold text-[#16a34a] tracking-wider uppercase">Top Picks</span>
+              <h2 className="text-2xl font-bold text-white tracking-tight mt-1">Best Selling Subscriptions</h2>
+            </div>
+            <Link href="/shop" className="btn-hermes-secondary text-xs px-4 py-2 rounded-xl">
+              See All Products
+            </Link>
           </div>
-          <Link href="/shop" className="btn-hermes-secondary text-xs px-4 py-2">
-            See All Products
-          </Link>
-        </div>
+        </FadeIn>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StaggerContainer
+          staggerDelay={0.06}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
           {products.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <StaggerItem key={p.id}>
+              <ProductCard product={p} />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </section>
 
       {/* 4. Verified Payment & Trust Banner */}
       <section className="container mx-auto px-4">
-        <div className="hermes-card rounded-2xl p-8 border border-[#064e3b] bg-gradient-to-r from-[#04241b] via-[#062e23] to-[#04241b]">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+        <FadeIn>
+          <div className="hermes-card rounded-2xl p-8 border border-[#064e3b] bg-gradient-to-r from-[#04241b] via-[#062e23] to-[#04241b]">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
             <div className="space-y-2">
               <span className="inline-flex items-center gap-1 text-xs text-[#86efac] font-semibold uppercase tracking-wider">
                 <ShieldCheck className="w-4 h-4 text-[#86efac]" />
@@ -294,6 +356,7 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
+        </FadeIn>
       </section>
 
       {/* 5. FAQs Section */}

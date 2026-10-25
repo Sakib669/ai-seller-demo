@@ -10,6 +10,7 @@ import {
   ArrowLeft,
   ShoppingBag,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cart-store";
 import { formatPrice } from "@/lib/utils";
 
@@ -329,20 +330,28 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                {paymentMethod === "MANUAL_BKASH" && (
-                  <div className="mt-3 pt-3 border-t border-[#064e3b] space-y-2">
-                    <label className="block text-gray-300 font-semibold">
-                      bKash Transaction ID (TrxID) <span className="text-red-400">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={trxId}
-                      onChange={(e) => setTrxId(e.target.value)}
-                      placeholder="e.g. BL9A4K89PQ"
-                      className="w-full bg-[#031711] border border-[#064e3b] rounded-lg p-2 text-white font-mono uppercase focus:outline-none focus:border-[#16a34a]"
-                    />
-                  </div>
-                )}
+                <AnimatePresence>
+                  {paymentMethod === "MANUAL_BKASH" && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="mt-3 pt-3 border-t border-[#064e3b] space-y-2 overflow-hidden"
+                    >
+                      <label className="block text-gray-300 font-semibold">
+                        bKash Transaction ID (TrxID) <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={trxId}
+                        onChange={(e) => setTrxId(e.target.value)}
+                        placeholder="e.g. BL9A4K89PQ"
+                        className="w-full bg-[#031711] border border-[#064e3b] rounded-lg p-2.5 text-white font-mono uppercase focus:outline-none focus:border-[#16a34a]"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </label>
 
               {/* Direct Nagad Push */}
@@ -372,20 +381,28 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                {paymentMethod === "MANUAL_NAGAD" && (
-                  <div className="mt-3 pt-3 border-t border-[#064e3b] space-y-2">
-                    <label className="block text-gray-300 font-semibold">
-                      Nagad Transaction ID (TrxID) <span className="text-red-400">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={trxId}
-                      onChange={(e) => setTrxId(e.target.value)}
-                      placeholder="e.g. 78AGK923"
-                      className="w-full bg-[#031711] border border-[#064e3b] rounded-lg p-2 text-white font-mono uppercase focus:outline-none focus:border-[#16a34a]"
-                    />
-                  </div>
-                )}
+                <AnimatePresence>
+                  {paymentMethod === "MANUAL_NAGAD" && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="mt-3 pt-3 border-t border-[#064e3b] space-y-2 overflow-hidden"
+                    >
+                      <label className="block text-gray-300 font-semibold">
+                        Nagad Transaction ID (TrxID) <span className="text-red-400">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={trxId}
+                        onChange={(e) => setTrxId(e.target.value)}
+                        placeholder="e.g. 78AGK923"
+                        className="w-full bg-[#031711] border border-[#064e3b] rounded-lg p-2.5 text-white font-mono uppercase focus:outline-none focus:border-[#16a34a]"
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </label>
             </div>
           </div>
@@ -434,10 +451,12 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <button
+            <motion.button
+              whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+              whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
               type="submit"
               disabled={isSubmitting}
-              className="w-full btn-hermes-primary py-3.5 text-sm flex items-center justify-center gap-2 mt-4 disabled:opacity-50"
+              className="w-full btn-hermes-primary py-3.5 text-sm flex items-center justify-center gap-2 mt-4 disabled:opacity-50 rounded-xl"
             >
               {isSubmitting ? (
                 <span>Processing Order...</span>
@@ -447,7 +466,7 @@ export default function CheckoutPage() {
                   <span>Place Order & Pay {formatPrice(subtotal)}</span>
                 </>
               )}
-            </button>
+            </motion.button>
           </div>
 
           <div className="p-4 bg-[#04241b] border border-[#064e3b] rounded-xl flex items-center gap-3 text-xs text-gray-300">

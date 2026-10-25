@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ProductCard } from "@/components/catalog/product-card";
 import { LayoutSwitcher } from "@/components/catalog/layout-switcher";
 import { ProductItem, CategoryItem } from "@/types";
-import { Filter, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 interface ShopViewProps {
   initialProducts: ProductItem[];
@@ -78,28 +79,45 @@ export function ShopView({
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setSelectedCategory("all")}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+            className={`relative px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
               selectedCategory === "all"
-                ? "bg-[#16a34a] text-white shadow-emerald"
-                : "bg-[#04241b] border border-[#064e3b] text-gray-300 hover:text-white hover:border-[#16a34a]"
+                ? "text-white"
+                : "text-gray-300 hover:text-white"
             }`}
           >
-            All Items ({initialProducts.length})
+            {selectedCategory === "all" && (
+              <motion.div
+                layoutId="activeCategoryPill"
+                className="absolute inset-0 bg-[#16a34a] rounded-full shadow-emerald"
+                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              />
+            )}
+            <span className="relative z-10">All Items ({initialProducts.length})</span>
           </button>
 
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                selectedCategory === cat.id
-                  ? "bg-[#16a34a] text-white shadow-emerald"
-                  : "bg-[#04241b] border border-[#064e3b] text-gray-300 hover:text-white hover:border-[#16a34a]"
-              }`}
-            >
-              {cat.name}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const isSelected = selectedCategory === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`relative px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+                  isSelected
+                    ? "text-white"
+                    : "text-gray-300 hover:text-white"
+                }`}
+              >
+                {isSelected && (
+                  <motion.div
+                    layoutId="activeCategoryPill"
+                    className="absolute inset-0 bg-[#16a34a] rounded-full shadow-emerald"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{cat.name}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* View Controls: Sort & Grid Layout */}
@@ -108,7 +126,7 @@ export function ShopView({
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="bg-[#04241b] border border-[#064e3b] text-white text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-[#16a34a]"
+            className="bg-[#04241b] border border-[#064e3b] text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-[#16a34a] transition-colors"
           >
             <option value="newest">Sort: Newest First</option>
             <option value="price-asc">Price: Low to High</option>
@@ -125,9 +143,13 @@ export function ShopView({
         <span>Showing {filteredProducts.length} digital products</span>
       </div>
 
-      {/* Grid of Products */}
+      {/* Grid of Products with Layout Animation */}
       {filteredProducts.length === 0 ? (
-        <div className="hermes-card rounded-2xl p-16 text-center space-y-3">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="hermes-card rounded-2xl p-16 text-center space-y-3"
+        >
           <div className="w-16 h-16 bg-[#064e3b]/50 rounded-full flex items-center justify-center mx-auto text-[#86efac]">
             <Search className="w-8 h-8 text-[#86efac]" />
           </div>
@@ -135,7 +157,9 @@ export function ShopView({
           <p className="text-xs text-gray-400">
             Try adjusting your search keywords or resetting the category filter.
           </p>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => {
               setSelectedCategory("all");
               setSearchTerm("");
@@ -143,14 +167,29 @@ export function ShopView({
             className="btn-hermes-secondary text-xs px-4 py-2 mt-2"
           >
             Reset Filters
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       ) : (
-        <div className={getGridClasses()}>
-          {filteredProducts.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
+        <motion.div
+          layout
+          className={getGridClasses()}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProducts.map((p) => (
+              <motion.div
+                key={p.id}
+                layout
+                initial={{ opacity: 0, scale: 0.94 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.25 }}
+              >
+                <ProductCard product={p} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       )}
     </div>
   );
